@@ -1,0 +1,48 @@
+og code
+
+char most_common(string str){
+    int a,b,c;
+    for(i = 0; i < str[]; i++){
+        if(str[i] = "a" || str[i] = "A"){
+            a +=1;
+        }
+        if(str[i] = "b" || str[i] = "B"){
+            b +=1;
+        }
+        if(str[i] = "c" || str[i] = "C"){
+            c +=1;
+        }
+        if(a=b || a=c || a >b && a>c){
+            return 'A';
+        }
+        else if(c > a && c > b)
+            return 'C';
+        }
+        else{
+            return 'B';
+        }
+    }
+    
+}
+
+compiling error
+forgot std:: before string
+for int before i in the loop
+should be using str.size for str[] to get the size of the string
+needed to include string
+should use == not = to compare 
+should compare a char to a char
+missing { on else if
+
+logic programs error
+returning if statement should be outside the loop
+a,b and c should be set to zero to start
+testing 
+first if should be  (a >=b && a>=c)
+
+
+
+fixed code
+
+
+
