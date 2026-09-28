@@ -1,0 +1,91 @@
+Test:
+
+test 1  (for checking friend, constructor, return, and operator overload )
+
+quiz6 q(2,2,4);
+quiz6 r = 3 + q;
+std::cout << r << std::endl;
+
+output: 
+175
+
+test 2  (for checking product, private, and comparison)
+
+quiz6 a(1,2,3);   
+quiz6 b(6);       
+quiz6 c(1,1,6);   
+
+std::cout << (a == c) << std::endl;  
+std::cout << (a == b) << std::endl;  
+
+
+output:
+1
+0
+
+test 3 (if constructors are wrong, everything else fails)
+
+quiz6 d;
+quiz6 e(5);
+quiz6 f(1,2,3);
+
+std::cout << d << std::endl;  
+std::cout << e << std::endl;  
+std::cout << f << std::endl;  
+
+
+output: 
+1
+125
+6
+
+
+Code: 
+
+#ifndef QUIZ_H
+#define QUIZ_H
+#include <iostream>
+
+class quiz6{
+    public:
+        quiz6();
+        quiz6(int);
+        quiz6(int, int, int);
+        bool operator==(const quiz6 &);
+        friend std::ostream &operator<<(std::ostream &, const quiz6 &);
+        friend quiz6 operator+(int, const quiz6 &);
+    private:
+        int x;
+        int y;
+        int z;
+}
+
+quiz6::quiz6(){
+    x = 1;
+    y = 1;
+    z = 1;
+}
+
+quiz6::quiz6(int a){
+    x = a;
+    y = a;
+    z = a;
+}
+
+quiz6::quiz6(int a, int b, int c){
+    x = a;
+    y = b;
+    z = c;
+}
+bool quiz6::operator==(const quiz6& q){
+    return ((x * y * z) == (q.x * q.y * q.z));
+}
+
+std::ostream& operator<<(std::ostream& out, const quiz6& q){
+    out << q.x * q.y * q.z;
+    return out;
+}
+
+quiz6 operator+(int a, const quiz6 &q){
+    return quiz6(a + q.x, a + q.y, a + q.z);
+}

@@ -1,0 +1,220 @@
+original code:
+
+#ifndef QUIZ_H
+#define QUIZ_H
+
+#include <iostream>
+#include <string>
+
+class quiz{
+    public:
+       quiz(const std::string&);
+       void print() const;
+
+       ~quiz();
+       quiz(const quiz &);
+       const quiz &operator=(const quiz &);
+
+    private:
+        struct node{
+            char *data; 
+            node *next;
+        };
+
+        node *head;
+
+        node *copy_list(node *p);
+        node *delete_list(node *p);
+};
+
+
+
+
+quiz::quiz(const std::string& str) {
+    
+}
+
+void quiz::print() const {
+   
+}
+
+
+quiz::~quiz() {
+    head = delete_list(head);
+}
+
+
+quiz::quiz(const quiz &other) {
+    head = copy_list(other.head);
+}
+
+
+const quiz& quiz::operator=(const quiz &other) {
+    if (this != &other) {
+        head = delete_list(head);
+        head = copy_list(other.head);
+    }
+    return *this;
+}
+
+
+quiz::node* quiz::copy_list(node *p) {
+    if (p == nullptr) {
+        return nullptr;
+    }
+
+    node *new_node = new node;
+
+    new_node->data = new char;
+    *(new_node->data) = *(p->data);
+
+    new_node->next = copy_list(p->next);
+
+    return new_node;
+}
+
+quiz::node* quiz::delete_list(node *p) {
+    if (p == nullptr) {
+        return nullptr;
+    }
+
+    delete_list(p->next);
+
+    delete p->data;
+    delete p;
+
+    return nullptr;
+}
+
+
+
+#endif
+
+
+Test: 
+
+int main() {
+    quiz q1("hello");
+    q1.print();
+
+    quiz q2 = q1; // copy constructor
+    q2.print();
+
+    quiz q3("abc");
+    q3 = q1; // assignment
+    q3.print();
+
+    return 0;
+}
+
+
+
+
+
+fixed code: 
+
+#ifndef QUIZ_H
+#define QUIZ_H
+
+#include <iostream>
+#include <string>
+
+class quiz{
+    public:
+       quiz(const std::string&);
+       void print() const;
+
+       ~quiz();
+       quiz(const quiz &);
+       const quiz &operator=(const quiz &);
+
+    private:
+        struct node{
+            char *data; 
+            node *next;
+        };
+
+        node *head;
+
+        node *copy_list(node *p);
+        node *delete_list(node *p);
+};
+
+
+
+
+quiz::quiz(const std::string& str) {
+
+  head = nullptr;
+  for (int i = str.size()-1; i>= 0; i--){
+    head = new node{new char(str[i]), head};
+  }
+}
+
+
+
+void quiz::print() const {
+    node *p = head;
+
+    while (p != nullptr) {
+        std::cout << *(p->data);
+        p = p->next;
+    }
+
+    std::cout << std::endl;
+}
+
+
+quiz::~quiz() {
+    head = delete_list(head);
+}
+
+
+quiz::quiz(const quiz &other) {
+    head = copy_list(other.head);
+}
+
+
+const quiz& quiz::operator=(const quiz &other) {
+    if (this != &other) {
+        head = delete_list(head);
+        head = copy_list(other.head);
+    }
+    return *this;
+}
+
+
+quiz::node* quiz::copy_list(node *p) {
+    if (p == nullptr) {
+        return nullptr;
+    }
+
+    node *new_node = new node;
+
+    new_node->data = new char;
+    *(new_node->data) = *(p->data);
+
+    new_node->next = copy_list(p->next);
+
+    return new_node;
+}
+
+quiz::node* quiz::delete_list(node *p) {
+    if (p == nullptr) {
+        return nullptr;
+    }
+
+    delete_list(p->next);
+
+    delete p->data;
+    delete p;
+
+    return nullptr;
+}
+
+
+
+
+
+
+#endif

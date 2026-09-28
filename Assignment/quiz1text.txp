@@ -1,0 +1,111 @@
+original code:
+
+#include <cstdlib>
+#include <iostream>
+
+int gen_random(){
+    srand(time(0));
+    return (rand()% 10) + 1;
+}
+
+int main(){
+    std::cout << "Enter a value";
+    int n, m;
+    int odd = 0;
+    int even = 0;
+    std::cin >> n;
+
+    for (int i = 0; i < n;i++){
+        m = gen_random();
+        if (m % 2 == 0){
+            even++;
+        }else{
+            odd++;
+        }
+    }
+    
+    if (odd > even){
+        std::cout << "Odd wins";
+    }else if (odd < even){
+        std::cout << "Evenwins";
+    }else{
+        std::cout << "Tie";
+    }
+    return 0;
+}
+
+Logical Error
+
+If this function is called multiple times 
+within the same second, time(0) returns the same value.
+
+So the random generator starts from the same seed each time 
+→ rand() produces the same “random” number repeatedly.
+
+fix → put the srand() underneath the main method
+
+
+
+Test:
+
+T1: n = 1; Edge case: only 1 number 
+Enter a value1
+3 Odd wins
+
+
+T2: n = 2; Small number
+Enter a value2
+7 1 Odd wins
+
+
+T3: n = 5; Medium
+Enter a value5
+1 2 7 5 10 Odd wins
+
+
+T4: n = 10; Larger sample, check distribution 
+Enter a value10
+3 2 8 9 5 5 9 4 7 8 Odd wins
+
+
+T5: n = 0; Edge case: zero numbers 
+           → should handle gracefully (currently it prints “Tie”)
+Enter a value0
+Tie
+
+
+fixed code:
+#include <cstdlib>
+#include <iostream>
+
+int gen_random(){
+    return (rand()% 10) + 1;
+}
+
+int main(){
+    srand(time(0));
+    std::cout << "Enter a value";
+    int n, m;
+    int odd = 0;
+    int even = 0;
+    std::cin >> n;
+
+    for (int i = 0; i < n;i++){
+        m = gen_random();
+        std::cout << m << " ";  // debug print
+        if (m % 2 == 0){
+            even++;
+        }else{
+            odd++;
+        }
+    }
+    
+    if (odd > even){
+        std::cout << "Odd wins";
+    }else if (odd < even){
+        std::cout << "Even wins";
+    }else{
+        std::cout << "Tie";
+    }
+    return 0;
+}

@@ -1,0 +1,87 @@
+original code:
+
+
+
+bool more_caps(std::string &og){
+    return more_caps(og, 0);
+}
+
+bool more_caps(std::string &og, int index){
+    if (index == og.size()){
+        return true;
+    }
+    bool check = more_caps(og, index + 1);
+    if (isupper(og[index]) && check){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+
+
+logic error:
+
+only checks isupper(og[index])
+never count lower case
+
+--> so lowercase doesn't affect the result
+ex: "AAAaaa" and "AAA" behave the same
+
+
+When index == og.size(), it return true, 
+but at this point, it hasn't counted anything. 
+it should return whether uppercase count > lowercase count.
+
+code checks if individual characters are uppercase 
+but never actually counts how many 
+uppercase vs lowercase letters exist in the entire string.
+
+
+
+
+ More uppercase than lowercase
+    test = "ABCDabc";
+     true
+
+    test = "HELLO";
+    true
+
+ More lowercase than uppercase
+    test = "abcAB";
+    false
+
+    test = "hello";
+    false
+
+ Equal counts
+    test = "AaBbCc";
+    false
+
+With numbers and symbols
+    test = "ABC123abc";
+    false
+
+Empty string
+    test = "";
+    false
+
+fixed code:
+
+bool more_caps(std::string &og, int index, int upper_count, int lower_count) {
+    if (index == og.size()) {
+        return upper_count > lower_count;
+    }
+     
+    if (isupper(og[index])) {
+        return more_caps(og, index + 1, upper_count + 1, lower_count);
+    } else if (islower(og[index])) {
+        return more_caps(og, index + 1, upper_count, lower_count + 1);
+    } else {
+        return more_caps(og, index + 1, upper_count, lower_count);
+    }
+}
+bool more_caps(std::string &og) {
+    return more_caps(og, 0, 0, 0);
+}

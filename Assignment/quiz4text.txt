@@ -1,0 +1,127 @@
+original code:
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+void flip(int n, std::string &s, int t, int h)
+{
+    if (n <= 0)
+    {
+        if (t >= 2 || h >= 2)
+        
+            bool row = false;
+            for (int i = 0; i < s.size() - 2; i++)
+            {
+                if (s[i] == s[i + 1])
+                {
+                    row = true;
+                }
+            }
+            if (row)
+            {
+                std::cout << s << "";
+                return;
+            }
+        }
+    }
+    s[s.size() - 1] = 'T';
+    flip(n - 1, s, t + 1, h);
+    s[s.size() - 1] = 'H';
+    flip(n - 1, s, t, h + 1);
+}
+
+void flip(int n)
+{
+    std::string s = "";
+    s.resize(n);
+    return flip(n, s, 0, 0);
+}
+
+
+logic error: 
+
+inside of for= loop (int i = 0; i < s.size() - 2; i++), 
+s.size()-2 is off by one and miss the last element
+
+ s[s.size() - 1] = 'T'and 
+ s[s.size() - 1] = 'T' 
+ s[s.size() - 1] doesn't change and never fill earlier positions like s[0] should have been n - 1 
+
+ missing one return at the end makes it infinite loop
+
+
+
+
+
+Test:
+
+n = 1 (edge case)
+none
+
+n = 2 (small enough that I can do it in my head or paper to check)
+
+HH
+TT
+
+
+n = 3 (larger one)
+HHH
+HHT
+HTT
+THH
+TTH
+TTT
+
+
+fixed code:
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+void flip(int n, std::string &s, int t, int h)
+{
+    if (n <= 0)
+    {
+        if (t >= 2 || h >= 2) 
+        {
+            bool row = false;                      
+            for (int i = 0; i < s.size() - 1; i++) 
+            {
+                if (s[i] == s[i + 1]) 
+                {
+                    row = true;
+                }
+            }
+            if (row) 
+            {
+                std::cout << s << "";
+                return;
+            }
+        }
+        return;
+    }
+    s[n - 1] = 'T';          
+    flip(n - 1, s, t + 1, h); 
+    s[n - 1] = 'H';
+    flip(n - 1, s, t, h + 1);
+}
+
+void flip(int n)
+{
+    std::string s = "";
+    s.resize(n);
+    flip(n, s, 0, 0);
+}
+
+int main()
+{
+    flip(2);
+    std::cout << std::endl;
+    flip(3);
+    std::cout << std::endl;
+    flip(1);
+    return 0;
+}

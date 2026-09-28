@@ -1,0 +1,65 @@
+original code:
+
+void makeNumChar (std::array <char> &arr){
+    int pos = 0;
+    for (int i = 1; i < arr.size(); i++){
+        if (isdigit(arr[i])){
+            swap(arr[i], arr[pos]);
+            pos++;
+        }
+    }
+    return;
+}
+
+
+error:
+
+for (int i = 1; i < arr.size(); i++) -> i is off by one (['3', 'a', '7'])
+
+std::array <char> &arr: need another parameter for size & syntax is off
+
+
+test:
+
+ordinary one {'3', 'a', '7', 'b', '1', 'c'} size 6
+
+Before: 3 a 7 b 1 c       
+After:  3 7 1 b a c  
+
+No digits {'a','b','c'} size 3
+
+Before: a b c 
+After:  a b c
+
+All digits {'1','2','3'}
+
+Before: 1 2 3 
+After:  1 2 3
+
+Digit already at front {'9','a','b'} 
+
+Before: 9 a b 
+After:  9 a b
+
+Digit at end {'a','b','8'} 
+
+Before: a b 8 
+After:  8 b a
+
+Empty array {} size 0
+
+Before:
+After:
+
+fixed code:  
+
+void makeNumChar(char arr[], int size){
+    int pos = 0;
+
+    for (int i = 0; i < size; i++){
+        if (isdigit(arr[i])){
+            std::swap(arr[i], arr[pos]);
+            pos++;
+        }
+    }
+}
